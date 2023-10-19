@@ -12,6 +12,7 @@
 
 #define MAX_PATH_LENGTH 4096
 #define _GNU_SOURCE
+#define ERROR -1
 
 extern char **environ;
 
@@ -25,6 +26,6 @@ char *_strncat(char *dest, char *src, int n);
 int execute(char *filename, char *const argv[], char **const environ);
 int _strncmp(const char *s1, const char *s2, size_t n);
 char *_strchr(char *s, char c);
-
+int exit_st(int wstatus);
 
 #endif

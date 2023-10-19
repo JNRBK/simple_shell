@@ -16,7 +16,7 @@ int printstr(char *str)
  * @environ: environment extern
  * Return: 0
 */
-
+int execute(char *filename, char *const argv[], char **const environ);
 int execute(char *filename, char *const argv[], char **const environ)
 {
 	char *path;
@@ -43,7 +43,7 @@ while (token != NULL)
 	int filename_length = _strlen(filename);
 
 	if (path_length + filename_length + 1 <= MAX_PATH_LENGTH)
-	 {
+	{
 		_strcpy(full_path, token);
 		_strcat(full_path, "/");
 		_strcat(full_path, filename);

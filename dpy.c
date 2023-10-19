@@ -1,5 +1,23 @@
 #include "shell.h"
 /**
+ * exit_st - function to check exit status
+ * @wstatus: sig/exit status
+ * Return: status
+*/
+
+int exit_st(int wstatus)
+{
+	if (WIFEXITED(wstatus))
+		return (WEXITSTATUS(wstatus));
+	else if (WIFSIGNALED(wstatus))
+		return (WTERMSIG(wstatus));
+	else if (WIFSTOPPED(wstatus))
+		return (WSTOPSIG(wstatus));
+	else
+		return (ERROR);
+}
+
+/**
  * main - main function for the shell prompt
  * @argc: argument counter
  * @argv: argument vector
@@ -20,19 +38,32 @@ int main(int argc, __attribute__((unused)) char *argv[])
 	while (1)
 	{
 		if (check)
-			write(1, "$ ", _strlen("$ "));
+			write(STDOUT_FILENO, "$ ", _strlen("$ "));
 		n_read = getline(&buffer_char, &buffer, stdin);
 		if (n_read == -1)
 		{
-			printstr("\n");
-			break;
+			if (check)
+				printstr("\n");
+			free(buffer_char);
+			exit(EXIT_SUCCESS);
 		}
+		if (buffer_char[x] == '\n')
+			buffer_char[x] = '\0';
 
-		tokens = strtok(buffer_char, " \n\t");
+		while (buffer_char[x] != '\0')
+		{
+			if (buffer_char[x] == '#')
+			{
+				buffer_char[x] = '\0';
+				break;
+			}
+			x++;
+		}
+		tokens = strtok(buffer_char, " \t\r\n\"");
 		while (tokens != NULL)
 		{
 			av[x] = tokens;
-			tokens = strtok(NULL, " \n\t");
+			tokens = strtok(NULL, " \t\r\n\"");
 			x++;
 		}
 		av[x] = NULL;
@@ -67,12 +98,11 @@ int main(int argc, __attribute__((unused)) char *argv[])
 		}
 		else
 		{
-			if (wait(&wstatus) == -1)
-				perror("wait");
+			wstatus = exit_st(wstatus);
 		}
 		free(buffer_char);
 		buffer_char = NULL;
-	   x = 0;
+		x = 0;
 		if (check == 0)
 			break;
 	}

@@ -1,5 +1,9 @@
 #include "shell.h"
-
+/**
+ * cd_command - cd
+ * @directory: directory
+ * Return: nothing
+*/
 void cd_command(char *directory)
 {
 	char *path = NULL;

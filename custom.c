@@ -16,6 +16,7 @@ int printstr(char *str)
  * @environ: environment extern
  * Return: 0
 */
+
 int execute(char *filename, char *const argv[], char **const environ)
 {
 	char *path;
@@ -25,12 +26,16 @@ int execute(char *filename, char *const argv[], char **const environ)
 	char errmsg[] = "Command not found: ";
 
 	if (_strchr(filename, '/') != NULL)
+	{
 		execve(filename, argv, environ);
 		perror("execve");
 		exit(EXIT_FAILURE);
+	}
 	path = getenv("PATH");
 	if (path == NULL)
+	{
 		return (0);
+	}
 	token = strtok(path, ":");
 while (token != NULL)
 {
@@ -38,17 +43,21 @@ while (token != NULL)
 	int filename_length = _strlen(filename);
 
 	if (path_length + filename_length + 1 <= MAX_PATH_LENGTH)
-	{
+	 {
 		_strcpy(full_path, token);
 		_strcat(full_path, "/");
 		_strcat(full_path, filename);
 		if (stat(full_path, &st) == 0 && st.st_mode & S_IXUSR)
+		{
 			execve(full_path, argv, environ);
 			perror("execve");
 			exit(EXIT_FAILURE);
+		}
 	}
 	else
+	{
 		write(STDERR_FILENO, "Path exceeds maximum length\n", 28);
+	}
 	token = strtok(NULL, ":");
 }
 	write(STDERR_FILENO, errmsg, _strlen(errmsg));

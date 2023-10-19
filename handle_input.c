@@ -14,7 +14,7 @@ char *read_input(void)
 
 	check = isatty(STDIN_FILENO);
 
-	n_read = getline(&line, &line_size, stdin);
+	n_read = _getline(&line, &line_size, stdin);
 	if (n_read == -1)
 	{
 		if (check)

@@ -27,7 +27,7 @@ int execute(char *filename, char *const argv[], char **env)
 		exit(EXIT_FAILURE);
 	}
 
-	tokens = strtok(path, ":");
+	tokens = _strtok(path, ":");
 	while (tokens != NULL)
 	{
 		full_path(c_path, sizeof(c_path), tokens, filename);
@@ -37,10 +37,11 @@ int execute(char *filename, char *const argv[], char **env)
 			perror("execve");
 			exit(EXIT_FAILURE);
 		}
-
-		tokens = strtok(NULL, ":");
+		tokens = _strtok(NULL, ":");
 	}
-
-	fprintf(stderr, "Command not found: %s\n", filename);
+	printstr(filename);
+	printstr(": ");
+	printstr("not found");
+	printline();
 	exit(EXIT_FAILURE);
 }

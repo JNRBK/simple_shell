@@ -12,11 +12,11 @@ void tokenize_line(char *buffer_char, char *arguments_array[])
 	char *tokens;
 	int x = 0;
 
-	tokens = strtok(buffer_char, " \t\r\n\a\"");
+	tokens = _strtok(buffer_char, " \t\r\n\a\"");
 	while (tokens != NULL)
 	{
 		arguments_array[x] = tokens;
-		tokens = strtok(NULL, " \t\r\n\a\"");
+		tokens = _strtok(NULL, " \t\r\n\a\"");
 		x++;
 	}
 	arguments_array[x] = NULL;
@@ -36,7 +36,7 @@ char *directories_array, char *arguments_array)
 {
 	full_path[0] = '\0';
 
-	strcat(full_path, directories_array);
-	strcat(full_path, "/");
-	strncat(full_path, arguments_array, (size - strlen(full_path) - 1));
+	_strcat(full_path, directories_array);
+	_strcat(full_path, "/");
+	_strncat(full_path, arguments_array, (size - _strlen(full_path) - 1));
 }
